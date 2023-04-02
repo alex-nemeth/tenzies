@@ -1,12 +1,30 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import Die from "./components/Die";
 
-function App() {
+export default function App() {
+    const [dice, setDice] = useState([]);
+
+    useEffect(() => {
+        allNewDice();
+    }, []);
+
+    const diceArray = dice.map((die, i) => {
+        return <Die value={die} key={i} />;
+    });
+
+    function allNewDice() {
+        const arr = [];
+        while (arr.length < 10) arr.push(Math.ceil(Math.random() * 6));
+        setDice(arr);
+    }
+
     return (
-        <div className="App">
-            <p> test </p>
-        </div>
+        <main>
+            <div className="die--container">{diceArray}</div>
+            <button className="die--reroll" onClick={allNewDice}>
+                Roll
+            </button>
+        </main>
     );
 }
-
-export default App;
