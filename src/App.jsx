@@ -74,8 +74,6 @@ export default function App() {
         return <Die die={die} key={nanoid()} handleClick={holdDice} />;
     });
 
-    const instructions = () => {};
-
     return (
         <main>
             {tenzies && personalBest < prevPB && <Confetti />}
