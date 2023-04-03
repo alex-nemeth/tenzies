@@ -11,11 +11,15 @@
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 body {
     margin: 0;
     background-color: #0b2434;
+    align-items: center;
+    justify-content: center;
 }
 
 main {
