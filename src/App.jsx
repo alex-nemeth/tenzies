@@ -5,10 +5,20 @@ import { nanoid } from "nanoid";
 
 export default function App() {
     const [dice, setDice] = useState([]);
+    const [tenzies, setTenzies] = useState(false);
 
     useEffect(() => {
         allNewDice();
     }, []);
+
+    useEffect(() => {
+        const heldValue = dice[0].value;
+        const allHeld = dice.every((die) => die.isHeld);
+        const allSameValue = dice.every((die) => die.value === heldValue);
+        if (allHeld && allSameValue) {
+            setTenzies(true);
+        }
+    }, [dice]);
 
     function generateNewDie() {
         return {
