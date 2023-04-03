@@ -10,46 +10,49 @@ export default function App() {
         allNewDice();
     }, []);
 
-    const diceArray = dice.map((die, i) => {
-        return <Die die={die} key={nanoid()} handleClick={holdDice} />;
-    });
-
-    /**
-     * Challenge: Update the `holdDice` function to flip
-     * the `isHeld` property on the object in the array
-     * that was clicked, based on the `id` prop passed
-     * into the function.
-     *
-     * Hint: as usual, there's > 1 way to accomplish this.
-     * I'll be using `dice.map()` and checking for the `id`
-     * of the die to determine which one to flip `isHeld` on,
-     * but you can do whichever way makes the most sense to you.
-     */
+    function generateNewDie() {
+        return {
+            value: Math.ceil(Math.random() * 6),
+            isHeld: false,
+            id: nanoid(),
+        };
+    }
 
     function allNewDice() {
         const arr = [];
-        while (arr.length < 10)
-            arr.push({
-                value: Math.ceil(Math.random() * 6),
-                isHeld: false,
-                id: nanoid(),
-            });
+        while (arr.length < 10) arr.push(generateNewDie());
         setDice(arr);
+    }
+
+    function rollDice() {
+        setDice((prevState) =>
+            prevState.map((die) => {
+                return die.isHeld ? die : generateNewDie();
+            })
+        );
     }
 
     function holdDice(id) {
         setDice((prevState) =>
             prevState.map((die) => {
-                if (die.id == id) die.isHeld = !die.isHeld;
-                return die;
+                return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
             })
         );
     }
 
+    const diceArray = dice.map((die, i) => {
+        return <Die die={die} key={nanoid()} handleClick={holdDice} />;
+    });
+
     return (
         <main>
+            <h1 className="title">Tenzies</h1>
+            <p className="instructions">
+                Roll until all dice are the same. Click each die to freeze it at
+                its current value between rolls.
+            </p>
             <div className="die--container">{diceArray}</div>
-            <button className="die--reroll" onClick={allNewDice}>
+            <button className="die--reroll" onClick={rollDice}>
                 Roll
             </button>
         </main>
